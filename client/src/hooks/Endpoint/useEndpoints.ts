@@ -66,14 +66,24 @@ export const useEndpoints = ({
       if (endpoints[i] === EModelEndpoint.agents && !hasAgentAccess) {
         continue;
       }
+      if (endpointsConfig[endpoints[i]]?.showInSidebar === false) {
+        continue;
+      }
       if (includedEndpoints.size > 0 && !includedEndpoints.has(endpoints[i])) {
         continue;
       }
       result.push(endpoints[i]);
     }
 
+    // Agents always first
+    const agentsIdx = result.indexOf(EModelEndpoint.agents);
+    if (agentsIdx > 0) {
+      result.splice(agentsIdx, 1);
+      result.unshift(EModelEndpoint.agents);
+    }
+
     return result;
-  }, [endpoints, hasAgentAccess, includedEndpoints, interfaceConfig.modelSelect]);
+  }, [endpoints, hasAgentAccess, includedEndpoints, interfaceConfig.modelSelect, endpointsConfig]);
 
   const endpointRequiresUserKey = useCallback(
     (ep: string) => {
