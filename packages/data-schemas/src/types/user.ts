@@ -56,6 +56,7 @@ export interface IUser extends Document {
   skillStates?: Record<string, boolean>;
   createdAt?: Date;
   updatedAt?: Date;
+  plan?: 'plan_basico' | 'plan_estandar' | 'plan_pro' | 'plan_byok' | 'plan_pro_byok' | null;
   /** Field for external source identification (for consistency with TPrincipal schema) */
   idOnTheSource?: string;
   tenantId?: string;
@@ -97,6 +98,7 @@ export interface UpdateUserRequest {
     memories?: boolean;
   };
   skillStates?: Record<string, boolean>;
+  plan?: 'plan_basico' | 'plan_estandar' | 'plan_pro' | 'plan_byok' | 'plan_pro_byok' | null;
 }
 
 export interface UserDeleteResult {

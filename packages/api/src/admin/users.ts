@@ -15,7 +15,7 @@ import { parsePagination } from './pagination';
 
 const MAX_SEARCH_LENGTH = 200;
 
-const USER_LIST_FIELDS = '_id name username email avatar role provider createdAt updatedAt';
+const USER_LIST_FIELDS = '_id name username email avatar role provider plan createdAt updatedAt';
 
 export interface AdminUsersDeps {
   findUsers: (
@@ -61,6 +61,7 @@ export function createAdminUsersHandlers(deps: AdminUsersDeps) {
         avatar: u.avatar ?? '',
         role: u.role ?? 'USER',
         provider: u.provider ?? 'local',
+        plan: u.plan ?? null,
         createdAt: u.createdAt?.toISOString(),
         updatedAt: u.updatedAt?.toISOString(),
       }));

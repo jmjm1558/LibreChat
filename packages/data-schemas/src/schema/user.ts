@@ -153,6 +153,11 @@ const userSchema = new Schema<IUser>(
       of: Boolean,
       default: () => new Map(),
     },
+    plan: {
+      type: String,
+      enum: ['plan_basico', 'plan_estandar', 'plan_pro', 'plan_byok', 'plan_pro_byok', null],
+      default: null,
+    },
     /** Field for external source identification (for consistency with TPrincipal schema) */
     idOnTheSource: {
       type: String,

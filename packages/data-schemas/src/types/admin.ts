@@ -111,6 +111,8 @@ export type AdminMember = {
   joinedAt?: string;
 };
 
+export type StellarPlan = 'plan_basico' | 'plan_estandar' | 'plan_pro' | 'plan_byok' | 'plan_pro_byok';
+
 /** Full user info returned by the admin user list endpoint. */
 export type AdminUserListItem = {
   id: string;
@@ -120,6 +122,7 @@ export type AdminUserListItem = {
   avatar: string;
   role: string;
   provider: string;
+  plan?: StellarPlan | null;
   createdAt?: string;
   updatedAt?: string;
 };

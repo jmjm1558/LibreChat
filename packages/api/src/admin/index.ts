@@ -1,10 +1,13 @@
 export { createAdminConfigHandlers } from './config';
 export { createAdminGrantsHandlers } from './grants';
 export { createAdminGroupsHandlers } from './groups';
+export { createAdminLiteLLMHandlers } from './litellm';
+export { createAdminPlansHandlers } from './plans';
 export { createAdminRolesHandlers } from './roles';
 export { createAdminUsersHandlers } from './users';
 export type { AdminConfigDeps } from './config';
 export type { AdminGrantsDeps, GrantPrincipalType } from './grants';
 export type { AdminGroupsDeps } from './groups';
+export type { AdminPlansDeps } from './plans';
 export type { AdminRolesDeps } from './roles';
 export type { AdminUsersDeps } from './users';

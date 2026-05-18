@@ -5,6 +5,8 @@ const adminAuth = require('./admin/auth');
 const adminConfig = require('./admin/config');
 const adminGrants = require('./admin/grants');
 const adminGroups = require('./admin/groups');
+const adminLitellm = require('./admin/litellm');
+const adminPlans = require('./admin/plans');
 const adminRoles = require('./admin/roles');
 const adminUsers = require('./admin/users');
 const endpoints = require('./endpoints');
@@ -40,6 +42,8 @@ module.exports = {
   adminConfig,
   adminGrants,
   adminGroups,
+  adminLitellm,
+  adminPlans,
   adminRoles,
   adminUsers,
   keys,

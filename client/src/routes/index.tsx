@@ -38,6 +38,11 @@ const loadSkillsView = () =>
     Component: m.default,
   }));
 
+const loadAdminLayout = () =>
+  import('~/components/Admin/AdminLayout').then((m) => ({
+    Component: m.default,
+  }));
+
 const baseEl = document.querySelector('base');
 const baseHref = baseEl?.getAttribute('href') || '/';
 
@@ -105,6 +110,10 @@ export const router = createBrowserRouter(
           ],
         },
         dashboardRoutes,
+        {
+          path: 'admin',
+          lazy: loadAdminLayout,
+        },
         {
           path: '/',
           element: <Root />,
