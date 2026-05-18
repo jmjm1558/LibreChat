@@ -8,8 +8,12 @@ import LiteLLMPanel from './LiteLLMPanel';
 type Tab = 'users' | 'litellm';
 
 export default function AdminLayout() {
-  const { user } = useAuthContext();
+  const { user, isAuthenticated } = useAuthContext();
   const [activeTab, setActiveTab] = useState<Tab>('users');
+
+  if (!isAuthenticated) {
+    return null;
+  }
 
   if (user?.role !== SystemRoles.ADMIN) {
     return <Navigate to="/" replace />;
