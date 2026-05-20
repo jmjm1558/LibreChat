@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { request } from 'librechat-data-provider';
 
 interface ModelInfo {
   model_name: string;
@@ -23,11 +24,7 @@ export default function LiteLLMPanel() {
   const fetchModels = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/admin/litellm/models');
-      if (!res.ok) {
-        throw new Error('Failed to connect to LiteLLM');
-      }
-      const data = await res.json();
+      const data = await request.get<{ data: ModelInfo[] }>('/api/admin/litellm/models');
       setModels(data.data || []);
       setError('');
     } catch (err) {
@@ -48,23 +45,13 @@ export default function LiteLLMPanel() {
     }
 
     try {
-      const res = await fetch('/api/admin/litellm/models', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model_name: newModel.model_name,
-          litellm_params: {
-            model: newModel.model,
-            api_key: newModel.api_key,
-          },
-        }),
+      await request.post('/api/admin/litellm/models', {
+        model_name: newModel.model_name,
+        litellm_params: {
+          model: newModel.model,
+          api_key: newModel.api_key,
+        },
       });
-
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.error || 'Failed to add model');
-      }
-
       setMessage(`Model ${newModel.model_name} added successfully`);
       setNewModel({ model_name: '', model: '', api_key: '' });
       setShowAdd(false);
@@ -80,15 +67,7 @@ export default function LiteLLMPanel() {
     }
 
     try {
-      const res = await fetch(`/api/admin/litellm/models/${encodeURIComponent(modelId)}`, {
-        method: 'DELETE',
-      });
-
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.error || 'Failed to delete model');
-      }
-
+      await request.delete(`/api/admin/litellm/models/${encodeURIComponent(modelId)}`);
       setMessage(`Model ${modelName} deleted`);
       fetchModels();
     } catch (err) {

@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { request } from 'librechat-data-provider';
 import PlanSelector from './PlanSelector';
 
 interface UserItem {
@@ -27,11 +28,7 @@ export default function UserManagement() {
   const fetchUsers = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/admin/users?limit=100');
-      if (!res.ok) {
-        throw new Error('Failed to fetch users');
-      }
-      const data = await res.json();
+      const data = await request.get<{ users: UserItem[]; total: number }>('/api/admin/users?limit=100');
       setUsers(data.users);
       setTotal(data.total);
     } catch (err) {
@@ -43,11 +40,8 @@ export default function UserManagement() {
 
   const fetchBalance = useCallback(async (userId: string) => {
     try {
-      const res = await fetch(`/api/admin/plans/${userId}/balance`);
-      if (res.ok) {
-        const data = await res.json();
-        setUserBalance(data);
-      }
+      const data = await request.get<BalanceInfo>(`/api/admin/plans/${userId}/balance`);
+      setUserBalance(data);
     } catch {
       setUserBalance(null);
     }
@@ -83,18 +77,7 @@ export default function UserManagement() {
     }
 
     try {
-      const res = await fetch(`/api/admin/plans/${selectedUser.id}/balance`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount }),
-      });
-
-      if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.error || 'Failed to adjust balance');
-      }
-
-      const data = await res.json();
+      const data = await request.post(`/api/admin/plans/${selectedUser.id}/balance`, { amount }) as { newBalance: number };
       setUserBalance((prev) => prev ? { ...prev, tokenCredits: data.newBalance } : null);
       setAdjustAmount('');
       setMessage(`Balance adjusted: ${amount > 0 ? '+' : ''}${amount.toLocaleString()}. New: ${data.newBalance.toLocaleString()}`);

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { request } from 'librechat-data-provider';
 
 const PLANS = [
   { id: 'plan_basico', label: 'Basico', tokens: 400_000 },
@@ -30,18 +31,7 @@ export default function PlanSelector({ userId, currentPlan, onPlanAssigned }: Pl
     setError('');
 
     try {
-      const res = await fetch(`/api/admin/plans/${userId}/plan`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ plan: selected }),
-      });
-
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.error || 'Failed to assign plan');
-      }
-
-      const data = await res.json();
+      const data = await request.put(`/api/admin/plans/${userId}/plan`, { plan: selected }) as { plan: string; newBalance: number };
       onPlanAssigned(userId, data.plan, data.newBalance);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error');
