@@ -393,6 +393,7 @@ export type TConfig = {
     defaultParamsEndpoint?: string;
     paramDefinitions?: Partial<SettingDefinition>[];
   };
+  showInSidebar?: boolean;
 };
 
 export type TEndpointsConfig =

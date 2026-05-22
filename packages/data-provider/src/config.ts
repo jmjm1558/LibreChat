@@ -625,6 +625,7 @@ export const endpointSchema = baseEndpointSchema.merge(
       })
       .strict()
       .optional(),
+    showInSidebar: z.boolean().optional(),
     directEndpoint: z.boolean().optional(),
     titleMessageRole: z.enum(['system', 'user', 'assistant']).optional(),
   }),

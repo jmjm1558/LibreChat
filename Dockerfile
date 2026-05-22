@@ -53,11 +53,10 @@ RUN \
 
 COPY --chown=node:node . .
 
-RUN \
-    # React client build with configurable memory
-    NODE_OPTIONS="--max-old-space-size=${NODE_MAX_OLD_SPACE_SIZE}" npm run frontend; \
-    npm prune --production; \
-    npm cache clean --force
+RUN find /app/packages /app/client -type d -exec chmod u+w {} \; && \
+    NODE_OPTIONS="--max-old-space-size=${NODE_MAX_OLD_SPACE_SIZE}" npm run frontend
+
+RUN npm prune --production && npm cache clean --force
 
 # Node API setup
 EXPOSE 3080
